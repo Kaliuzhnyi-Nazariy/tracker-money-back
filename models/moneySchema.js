@@ -67,13 +67,13 @@ const makeOperationsValidation = Joi.object({
       "any.only": `Category must be one of: ${categoryEnum.join(", ")}`,
     }),
 
-  owner: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/) // Validates MongoDB ObjectId
-    .required()
-    .messages({
-      "string.pattern.base": "Owner must be a valid MongoDB ObjectId",
-      "string.empty": "Owner is required",
-    }),
+  // owner: Joi.string()
+  //   .pattern(/^[0-9a-fA-F]{24}$/) // Validates MongoDB ObjectId
+  //   .required()
+  //   .messages({
+  //     "string.pattern.base": "Owner must be a valid MongoDB ObjectId",
+  //     "string.empty": "Owner is required",
+  //   }),
 });
 
 module.exports = { Money, makeOperationsValidation };
