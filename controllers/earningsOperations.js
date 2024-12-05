@@ -24,9 +24,9 @@ const addEarnings = async (req, res, next) => {
     type,
   };
 
-  await Money.create(newEarnings);
+  const newEarning = await Money.create(newEarnings);
 
-  res.status(201).json(newEarnings);
+  res.status(201).json(newEarning);
 };
 
 const updateEarnings = async (req, res, next) => {
