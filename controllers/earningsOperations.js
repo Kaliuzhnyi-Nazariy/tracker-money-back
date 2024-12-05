@@ -47,9 +47,12 @@ const updateEarnings = async (req, res, next) => {
     type: isEarnings.type,
   };
 
-  await Money.findByIdAndUpdate(earningsId, newUpdatedEarnings);
+  const updEarning = await Money.findByIdAndUpdate(
+    earningsId,
+    newUpdatedEarnings
+  );
 
-  res.status(200).json(newUpdatedEarnings);
+  res.status(200).json(updEarning);
 };
 
 const removeEarnings = async (req, res, next) => {
