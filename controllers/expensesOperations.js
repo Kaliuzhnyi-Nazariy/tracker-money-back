@@ -24,9 +24,9 @@ const addExpenses = async (req, res, next) => {
     type,
   };
 
-  await Money.create(newExpenses);
+  const newExpense = await Money.create(newExpenses);
 
-  res.status(201).json(newExpenses);
+  res.status(201).json(newExpense);
 };
 
 const updateExpenses = async (req, res, next) => {
@@ -47,9 +47,13 @@ const updateExpenses = async (req, res, next) => {
     type: isExpense.type,
   };
 
-  await Money.findByIdAndUpdate(expensesId, newUpdatedExpenses);
+  const updated = await Money.findByIdAndUpdate(
+    expensesId,
+    newUpdatedExpenses,
+    { new: true }
+  );
 
-  res.status(200).json(newUpdatedExpenses);
+  res.status(200).json(updated);
 };
 
 const removeExpenses = async (req, res, next) => {
