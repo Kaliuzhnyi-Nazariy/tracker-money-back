@@ -8,6 +8,10 @@ router.post("/register", validationBody(schemas.regValidation), ctr.register);
 
 router.post("/login", validationBody(schemas.loginValidation), ctr.login);
 
+router.post("/forgotPassword", ctr.forgotReq);
+
+router.put("/renewPassword/:tokenRenew", ctr.renewPassword);
+
 router.post("/logout", authenticate, ctr.logout);
 
 module.exports = router;

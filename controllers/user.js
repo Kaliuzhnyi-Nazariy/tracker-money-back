@@ -2,6 +2,7 @@ const { ErrorHelper, ctrlWrapper } = require("../helpers");
 const { User } = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
 const { SECRET_KEY } = process.env;
 
@@ -58,8 +59,49 @@ const logout = async (req, res, next) => {
   res.status(204).json();
 };
 
+const forgotReq = async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    next(ErrorHelper(404, "User not found!"));
+  }
+
+  const resetTok = uuidv4();
+
+  await User.findByIdAndUpdate(user._id, { changePasswordToken: resetTok });
+
+  res.status(200).json({ resetTok });
+};
+
+const renewPassword = async (req, res, next) => {
+  const { tokenRenew: changePasswordToken } = req.params;
+  console.log(changePasswordToken);
+
+  const user = await User.findOne({ changePasswordToken });
+
+  if (!user) next(ErrorHelper(400));
+
+  const { newPassword, confirmNewPassword } = req.body;
+
+  if (newPassword !== confirmNewPassword)
+    next(ErrorHelper(400, "Passwords do not match!"));
+
+  const hashPass = await bcrypt.hash(newPassword, 10);
+
+  await User.findByIdAndUpdate(user._id, {
+    password: hashPass,
+    changePasswordToken: "",
+  });
+
+  res.status(200).json({ message: "Password had been changed!" });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
+  forgotReq: ctrlWrapper(forgotReq),
+  renewPassword: ctrlWrapper(renewPassword),
 };
