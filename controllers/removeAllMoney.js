@@ -18,7 +18,7 @@ const resetAll = async (req, res, next) => {
 
   await Money.deleteMany({ owner });
 
-  res.status(204);
+  res.status(204).json();
 };
 
 module.exports = { resetAll: ctrlWrapper(resetAll) };
