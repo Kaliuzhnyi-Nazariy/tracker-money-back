@@ -2,6 +2,7 @@ const express = require("express");
 const { authenticate, validationBody } = require("../middlewares/");
 const ctr = require("../controllers/expensesOperations");
 const ctrl = require("../controllers/earningsOperations");
+const { resetAll } = require("../controllers/removeAllMoney");
 const { makeOperationsValidation } = require("../models/moneySchema");
 
 const router = express.Router();
@@ -45,5 +46,7 @@ router.delete(
   authenticate,
   ctrl.removeEarnings
 );
+
+router.delete("/resetAll", authenticate, resetAll);
 
 module.exports = router;
