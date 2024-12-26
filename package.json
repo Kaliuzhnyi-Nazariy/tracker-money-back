@@ -16,6 +16,7 @@
     "express": "^4.21.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "mongoose": "^8.8.2",
     "nodemon": "^3.1.7",
     "uuid": "^11.0.3"
