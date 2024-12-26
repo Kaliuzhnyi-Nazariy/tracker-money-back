@@ -1,4 +1,4 @@
-const { ErrorHelper } = require("../helpers");
+const { ErrorHelper, isTokenExpired } = require("../helpers");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/userSchema");
 
@@ -10,6 +10,11 @@ const authenticate = async (req, res, next) => {
   if (bearer !== "Bearer") next(ErrorHelper(401));
 
   try {
+    const isNotValid = isTokenExpired(token);
+
+    if (isNotValid.isExpired) {
+      await User.findByIdAndUpdate(isNotValid.id, { token: "" });
+    }
     const { id } = jwt.verify(token, SECRET_KEY);
     const user = await User.findById(id);
 
